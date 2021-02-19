@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Progress from "./Progress";
 
 // Question>> text/decription/ answers>> text/correct
 
@@ -6,17 +7,17 @@ const Questions = ({ topic }) => {
   const [questionAnswered, setQuestionAnswered] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [progress, setProgress] = useState(0);
-  const [score, setScore] = useState(0);
+  const [results, setResults] = useState([]);
 
   // Event callback when the user clicks one of the answers
   const answerClicked = (answer) => {
     setQuestionAnswered(true);
     setSelectedAnswer(answer);
-    if (answer.correct) {
-      setScore(score + 1);
-    }
+    answer.correct
+      ? setResults((results) => [...results, 1])
+      : setResults((results) => [...results, 0]);
   };
-
+  console.log(results);
   // Event callback when the user wants to progress to the next question
   const nextQuestion = () => {
     console.log("nextQuestion");
@@ -51,8 +52,13 @@ const Questions = ({ topic }) => {
   );
 
   return (
-    <div className="question-container">
-      {progress + 1}/{topic.length} <b>{score}</b>
+    <div className="center-container">
+      <Progress
+        progress={progress + 1}
+        duration={topic.length}
+        results={results}
+      />
+
       <h2>{topic[progress].text}</h2>
       {questionAnswered ? answerFeedback : answers}
       {questionAnswered ? (
