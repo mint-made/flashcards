@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/flashcards/static/css/main.8660d357.chunk.css",
+    "main.css": "/flashcards/static/css/main.20ebaf51.chunk.css",
     "main.js": "/flashcards/static/js/main.9683a1ea.chunk.js",
     "main.js.map": "/flashcards/static/js/main.9683a1ea.chunk.js.map",
     "runtime-main.js": "/flashcards/static/js/runtime-main.cd00b64d.js",
@@ -8,7 +8,7 @@
     "static/js/2.c2edec53.chunk.js": "/flashcards/static/js/2.c2edec53.chunk.js",
     "static/js/2.c2edec53.chunk.js.map": "/flashcards/static/js/2.c2edec53.chunk.js.map",
     "index.html": "/flashcards/index.html",
-    "static/css/main.8660d357.chunk.css.map": "/flashcards/static/css/main.8660d357.chunk.css.map",
+    "static/css/main.20ebaf51.chunk.css.map": "/flashcards/static/css/main.20ebaf51.chunk.css.map",
     "static/js/2.c2edec53.chunk.js.LICENSE.txt": "/flashcards/static/js/2.c2edec53.chunk.js.LICENSE.txt",
     "static/media/cross.99fe7db8.svg": "/flashcards/static/media/cross.99fe7db8.svg",
     "static/media/github.8315d36d.svg": "/flashcards/static/media/github.8315d36d.svg",
@@ -18,7 +18,7 @@
   "entrypoints": [
     "static/js/runtime-main.cd00b64d.js",
     "static/js/2.c2edec53.chunk.js",
-    "static/css/main.8660d357.chunk.css",
+    "static/css/main.20ebaf51.chunk.css",
     "static/js/main.9683a1ea.chunk.js"
   ]
 }
