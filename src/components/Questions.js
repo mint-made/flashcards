@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import ProgressBar from "./ProgressBar";
+import Congrats from "./Congrats";
 
 // Question>> text/decription/ answers>> text/correct
 
 const Questions = ({ lesson, lessonCompleteCallback }) => {
   const [questionAnswered, setQuestionAnswered] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [lessonComplete, setLessonComplete] = useState(false);
   const [progress, setProgress] = useState(0);
   const [results, setResults] = useState([]);
 
@@ -28,41 +30,47 @@ const Questions = ({ lesson, lessonCompleteCallback }) => {
   };
   // Event callback when the user wants to progress to the next question
   const nextQuestion = () => {
-    console.log(progress, lesson.questions.length);
     if (progress < lesson.questions.length - 1) {
       setProgress(progress + 1);
       setQuestionAnswered(false);
     } else {
-      setProgress(0);
-      lessonCompleteCallback();
+      setLessonComplete(true);
     }
   };
 
-  // Generates html for the answers the user can choose
-  const answers = lesson.questions[progress].answers.map((answer, index) => {
-    return (
-      <div
-        key={index}
-        onClick={() => answerClicked(answer)}
-        className="answers bg-grey"
-      >
-        {answer.text}
-      </div>
-    );
-  });
+  // Displays answers or feedback to a users answer depending on the boolean {questionAnswered}
 
-  // Displays feedback to the user on their selected answer to the question
-  const answerFeedback = (
-    <React.Fragment>
-      <div className="answers bg-blue">{selectedAnswer.text}</div>
-      <div
-        className={`text-box ${selectedAnswer.correct ? "bg-green" : "bg-red"}`}
-      >
-        <b>{selectedAnswer.correct ? "Correct! " : "Incorrect: "}</b>
-        {lesson.questions[0].description}
-      </div>
-    </React.Fragment>
-  );
+  const answers = () => {
+    if (!questionAnswered) {
+      // Possible answers to the question
+      return lesson.questions[progress].answers.map((answer, index) => {
+        return (
+          <div
+            key={index}
+            onClick={() => answerClicked(answer)}
+            className="answers bg-grey"
+          >
+            {answer.text}
+          </div>
+        );
+      });
+    } else {
+      // answer feedback after the use have chosen an answer
+      return (
+        <React.Fragment>
+          <div className="answers bg-blue">{selectedAnswer.text}</div>
+          <div
+            className={`text-box ${
+              selectedAnswer.correct ? "bg-green" : "bg-red"
+            }`}
+          >
+            <b>{selectedAnswer.correct ? "Correct! " : "Incorrect: "}</b>
+            {lesson.questions[0].description}
+          </div>
+        </React.Fragment>
+      );
+    }
+  };
 
   return (
     <div className="center-container">
@@ -74,9 +82,22 @@ const Questions = ({ lesson, lessonCompleteCallback }) => {
         duration={lesson.questions.length}
         results={results}
       />
-      <h2 className="mt-0">{lesson.questions[progress].text}</h2>
-      {questionAnswered ? answerFeedback : answers}
-      {questionAnswered ? (
+
+      {lessonComplete ? (
+        <React.Fragment>
+          <Congrats results={results} />
+          <div onClick={() => lessonCompleteCallback()} className="btn">
+            Choose Next Lesson
+          </div>
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <h2 className="mt-0">{lesson.questions[progress].text}</h2>
+          {answers()}
+        </React.Fragment>
+      )}
+
+      {questionAnswered && !lessonComplete ? (
         <div onClick={() => nextQuestion()} className="btn">
           Next Question
         </div>
@@ -86,5 +107,7 @@ const Questions = ({ lesson, lessonCompleteCallback }) => {
     </div>
   );
 };
+
+//{questionAnswered ? answerFeedback : answers}
 
 export default Questions;
