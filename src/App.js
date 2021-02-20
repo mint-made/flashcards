@@ -7,23 +7,40 @@ import "./style.css";
 
 const App = () => {
   const [flashcardsActive, setFlashcardsActive] = useState(false);
+  const [currentLesson, setCurrentLesson] = useState(topics[0].lessons[0]);
 
-  const topicSelectedCallback = () => {
-    console.log("topic selected");
+  // A callback for when the user selects a lesson
+  const lessonSelectedCallback = ({ topicName, lessonName }) => {
+    const selectedTopic = topics.find((topic) => topic.name === topicName);
+    const selectedLesson = selectedTopic.lessons.find(
+      (lesson) => lesson.name === lessonName
+    );
+    selectedLesson.topic = topicName;
+    setCurrentLesson(selectedLesson);
+    setFlashcardsActive(true);
+  };
+  // A callback for when the user completes the lesson
+  const lessonCompleteCallback = () => {
+    setFlashcardsActive(false);
   };
 
   return (
-    <div className="container">
+    <React.Fragment>
       <Navbar />
-      {flashcardsActive ? (
-        <Questions topic={topics.react[0].questions} />
-      ) : (
-        <TopicsMenu
-          topicSelectedCallback={topicSelectedCallback}
-          topics={topics}
-        />
-      )}
-    </div>
+      <div className="container">
+        {flashcardsActive ? (
+          <Questions
+            lesson={currentLesson}
+            lessonCompleteCallback={lessonCompleteCallback}
+          />
+        ) : (
+          <TopicsMenu
+            lessonSelectedCallback={lessonSelectedCallback}
+            topics={topics}
+          />
+        )}
+      </div>
+    </React.Fragment>
   );
 };
 

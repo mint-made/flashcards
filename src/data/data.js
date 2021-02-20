@@ -135,7 +135,7 @@ const topics = [
     lessons: [
       {
         name: "Basics",
-        question: [
+        questions: [
           {
             text: "test question",
             description: "test",

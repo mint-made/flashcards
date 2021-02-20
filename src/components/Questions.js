@@ -1,13 +1,22 @@
 import React, { useState } from "react";
-import Progress from "./Progress";
+import ProgressBar from "./ProgressBar";
 
 // Question>> text/decription/ answers>> text/correct
 
-const Questions = ({ topic }) => {
+const Questions = ({ lesson, lessonCompleteCallback }) => {
   const [questionAnswered, setQuestionAnswered] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [progress, setProgress] = useState(0);
   const [results, setResults] = useState([]);
+
+  //console.log("questions component", lesson.questions);
+  if (lesson === undefined) {
+    return (
+      <div>
+        <b>questions is undefined</b>
+      </div>
+    );
+  }
 
   // Event callback when the user clicks one of the answers
   const answerClicked = (answer) => {
@@ -17,16 +26,20 @@ const Questions = ({ topic }) => {
       ? setResults((results) => [...results, 1])
       : setResults((results) => [...results, 0]);
   };
-  console.log(results);
   // Event callback when the user wants to progress to the next question
   const nextQuestion = () => {
-    console.log("nextQuestion");
-    setProgress(progress + 1);
-    setQuestionAnswered(false);
+    console.log(progress, lesson.questions.length);
+    if (progress < lesson.questions.length - 1) {
+      setProgress(progress + 1);
+      setQuestionAnswered(false);
+    } else {
+      setProgress(0);
+      lessonCompleteCallback();
+    }
   };
 
   // Generates html for the answers the user can choose
-  const answers = topic[progress].answers.map((answer, index) => {
+  const answers = lesson.questions[progress].answers.map((answer, index) => {
     return (
       <div
         key={index}
@@ -46,20 +59,22 @@ const Questions = ({ topic }) => {
         className={`text-box ${selectedAnswer.correct ? "bg-green" : "bg-red"}`}
       >
         <b>{selectedAnswer.correct ? "Correct! " : "Incorrect: "}</b>
-        {topic[0].description}
+        {lesson.questions[0].description}
       </div>
     </React.Fragment>
   );
 
   return (
     <div className="center-container">
-      <Progress
+      <h2 className="mt-0">
+        {lesson.topic}: <i>{lesson.name}</i>
+      </h2>
+      <ProgressBar
         progress={progress + 1}
-        duration={topic.length}
+        duration={lesson.questions.length}
         results={results}
       />
-
-      <h2>{topic[progress].text}</h2>
+      <h2 className="mt-0">{lesson.questions[progress].text}</h2>
       {questionAnswered ? answerFeedback : answers}
       {questionAnswered ? (
         <div onClick={() => nextQuestion()} className="btn">
