@@ -1,5 +1,5 @@
 
-## Flashcards: Learning React - (2021)
+## Flashcards (2021)
 
 
 ### Project Overview
